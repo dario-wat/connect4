@@ -1,9 +1,9 @@
+import {BOARD_COLUMNS, BOARD_ROWS} from './Board.js';
+
 // Dimensions of the board
 const DISC_R = 50;
 const HOLE_SPACE_X = 30;
 const HOLE_SPACE_Y = 15;
-const BOARD_WIDTH = 7;
-const BOARD_HEIGHT = 6;
 const BOARD_START_X = 50;
 const BOARD_START_Y = 50;
 
@@ -24,7 +24,7 @@ function yCoord(row) {
 // Column given X coordinate
 function colFromX(x) {
   var fCol = (x - BOARD_START_X - HOLE_SPACE_X / 2) / (2 * DISC_R + HOLE_SPACE_X);
-  return fCol < 0 || fCol >= BOARD_WIDTH ? -1 : Math.trunc(fCol);
+  return fCol < 0 || fCol >= BOARD_COLUMNS ? -1 : Math.trunc(fCol);
 }
 
 function drawBackground() {
@@ -37,12 +37,12 @@ function drawBoard() {
   ctx.fillRect(
     BOARD_START_X + HOLE_SPACE_X / 2, 
     BOARD_START_Y,
-    BOARD_WIDTH * 2 * DISC_R + BOARD_WIDTH * HOLE_SPACE_X, 
-    BOARD_HEIGHT * 2 * DISC_R + (BOARD_HEIGHT + 1) * HOLE_SPACE_Y,
+    BOARD_COLUMNS * 2 * DISC_R + BOARD_COLUMNS * HOLE_SPACE_X, 
+    BOARD_ROWS * 2 * DISC_R + (BOARD_ROWS + 1) * HOLE_SPACE_Y,
   );
 
-  for (r = 0; r < BOARD_HEIGHT; r++) {
-    for (c = 0; c < BOARD_WIDTH; c++) {
+  for (var r = 0; r < BOARD_ROWS; r++) {
+    for (var c = 0; c < BOARD_COLUMNS; c++) {
       ctx.beginPath();
       ctx.arc(
         xCoord(c),
@@ -65,11 +65,10 @@ function redraw() {
 
 function onMouseUpdate(e) {
   redraw();
-  var x = e.pageX;
-  var y = e.pageY;
+  var x = e.x;
+  var y = e.y;
 
   var col = colFromX(x);
-  // console.log(col);
   if (col == -1) {
     return;
   }
@@ -80,11 +79,18 @@ function onMouseUpdate(e) {
     xCoord(col) - DISC_R - HOLE_SPACE_X / 2, 
     BOARD_START_Y,
     2 * DISC_R + HOLE_SPACE_X, 
-    BOARD_HEIGHT * 2 * DISC_R + (BOARD_HEIGHT + 1) * HOLE_SPACE_Y,
+    BOARD_ROWS * 2 * DISC_R + (BOARD_ROWS + 1) * HOLE_SPACE_Y,
   );
   ctx.stroke();
 }
 
-document.addEventListener('mousemove', onMouseUpdate, false);
+function onMouseClick(e) {
+  // console.log(e);
+  var col = colFromX(e.x);
+  console.log(col);
+}
+
+document.addEventListener('mousemove', onMouseUpdate);
+document.addEventListener('click', onMouseClick);
 
 redraw();
