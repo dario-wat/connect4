@@ -5,11 +5,11 @@ export const DISC_EMPTY = 0;
 export const DISC_RED = 1;
 export const DISC_YELLOW = 2;
 
-const RESULT_RED_WINS = 0;
-const RESUL_YELLOW_WINS = 1;
-const RESULT_DRAW = 2;
-const RESULT_RED_PLAYS = 3;
-const RESULT_YELLOW_PLAYS = 4;
+export const RESULT_RED_WINS = 0;
+export const RESULT_YELLOW_WINS = 1;
+export const RESULT_DRAW = 2;
+export const RESULT_RED_PLAYS = 3;
+export const RESULT_YELLOW_PLAYS = 4;
 
 export class Board {
   constructor() {
@@ -46,11 +46,11 @@ export class Board {
     if (this._hasWin(DISC_RED)) {
       return RESULT_RED_WINS;
     } else if (this._hasWin(DISC_YELLOW)) {
-      return RESUL_YELLOW_WINS;
+      return RESULT_YELLOW_WINS;
     } else if (this.color == DISC_RED) {
       return RESULT_RED_PLAYS;
     } else if (this.color == DISC_YELLOW) {
-      return DISC_YELLOW;
+      return RESULT_YELLOW_PLAYS;
     }
     return RESULT_DRAW;
   }
