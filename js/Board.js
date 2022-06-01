@@ -74,7 +74,7 @@ export class Board {
   static _anyHas4(arr, color) {
     var color4 = [color, color, color, color];
     var has4 = row => row.toString().indexOf(color4.toString()) > -1;
-    return arr.filter(row => has4(row)).length > 0;
+    return arr.filter(has4).length > 0;
   }
 
   _hasHorizontalWin(color) {
