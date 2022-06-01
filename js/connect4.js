@@ -88,18 +88,7 @@ function drawDiscs(board) {
   }
 }
 
-function redraw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBackground();
-  drawBoard();
-  drawDiscs(b);
-}
-
-function onMouseUpdate(e) {
-  redraw();
-  var x = e.x;
-  var y = e.y;
-
+function drawBoundary(x, y) {
   var col = colFromX(x);
   if (col == -1) {
     return;
@@ -116,13 +105,30 @@ function onMouseUpdate(e) {
   ctx.stroke();
 }
 
+function redraw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBackground();
+  drawBoard();
+  drawDiscs(b);
+}
+
+function onMouseUpdate(e) {
+  redraw();
+  var x = e.x;
+  var y = e.y;
+  drawBoundary(x, y);
+  
+}
+
 function onMouseClick(e) {
   // console.log(e);
 
   var col = colFromX(e.x);
   b.tossDisk(col);
-  console.log(col);
+  // console.log(col);
   redraw();
+  drawBoundary(e.x, e.y);
+  console.log('Result ', b.getResult());
 }
 
 document.addEventListener('mousemove', onMouseUpdate);
