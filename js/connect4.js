@@ -7,7 +7,6 @@ b.tossDisk(3);
 b.tossDisk(3);
 b.tossDisk(3);
 var color = DISC_RED;
-console.log(b);
 
 
 function onMouseUpdate(e) {
@@ -15,7 +14,6 @@ function onMouseUpdate(e) {
   var x = e.x;
   var y = e.y;
   drawBoundary(x, y);
-  
 }
 
 function onMouseClick(e) {

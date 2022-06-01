@@ -29,7 +29,7 @@ function yCoord(row) {
 }
 
 // Column given X coordinate
-export function colFromX(x) {
+function colFromX(x) {
   var fCol = (x - BOARD_START_X - HOLE_SPACE_X / 2) / (2 * DISC_R + HOLE_SPACE_X);
   return fCol < 0 || fCol >= BOARD_COLUMNS ? -1 : Math.trunc(fCol);
 }
@@ -94,23 +94,27 @@ function drawResult(board) {
   switch (result) {
     case RESULT_RED_WINS:
       text = 'Red Wins';
+      ctx.fillStyle = 'red';
       break;
     case RESULT_YELLOW_WINS:
       text = 'Yellow Wins';
+      ctx.fillStyle = 'yellow';
       break;
     case RESULT_RED_PLAYS:
       text = 'Red Plays';
+      ctx.fillStyle = 'red';
       break;
     case RESULT_YELLOW_PLAYS:
       text = 'Yellow Plays';
+      ctx.fillStyle = 'yellow';
       break;
     case RESULT_DRAW:
       text = 'Draw';
+      ctx.fillStyle = 'blue';
       break;
   }
 
   ctx.font = '30px arial';
-  ctx.fillStyle = 'white';
   ctx.fillText(
     text, 
     BOARD_START_X + BOARD_WIDTH + RESULT_TEXT_OFFSET_X,
@@ -143,4 +147,4 @@ function redraw(board) {
   drawResult(board);
 }
 
-export {drawBoundary, redraw};
+export {colFromX, drawBoundary, redraw};

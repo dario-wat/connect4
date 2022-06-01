@@ -27,6 +27,11 @@ export class Board {
     if (column < 0 || column >= BOARD_COLUMNS) {
       throw 'Column for tossing must be valid';
     }
+
+    if (this.gameFinished()) {
+      // Game over, no more moves can be made
+      return;
+    }
     
     var emptyIndex = this.board.map(row => row[column]).findIndex(e => e != DISC_EMPTY);
     var row = emptyIndex == -1 ? BOARD_ROWS - 1 : emptyIndex - 1;
@@ -53,6 +58,11 @@ export class Board {
       return RESULT_YELLOW_PLAYS;
     }
     return RESULT_DRAW;
+  }
+
+  gameFinished() {
+    var result = this.getResult();
+    return result == RESULT_RED_WINS || result == RESULT_YELLOW_WINS || result == RESULT_DRAW;
   }
 
   _hasWin(color) {
