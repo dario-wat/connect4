@@ -1,4 +1,4 @@
-import {BOARD_COLUMNS, BOARD_ROWS} from './Board.js';
+import {BOARD_COLUMNS, BOARD_ROWS, Board, DISC_EMPTY, DISC_RED, DISC_YELLOW} from './Board.js';
 
 // Dimensions of the board
 const DISC_R = 50;
@@ -6,6 +6,13 @@ const HOLE_SPACE_X = 30;
 const HOLE_SPACE_Y = 15;
 const BOARD_START_X = 50;
 const BOARD_START_Y = 50;
+
+var b = new Board();
+b.tossDisk(3);
+b.tossDisk(3);
+b.tossDisk(3);
+var color = DISC_RED;
+console.log(b);
 
 
 var canvas = document.getElementById('canvas');
@@ -57,10 +64,35 @@ function drawBoard() {
   }
 }
 
+function drawDiscs(board) {
+  for (var r = 0; r < BOARD_ROWS; r++) {
+    for (var c = 0; c < BOARD_COLUMNS; c++) {
+      ctx.beginPath();
+      var color = board.get(r, c);
+      if (color == DISC_RED) {
+        ctx.fillStyle = 'red';
+      } else if (color == DISC_YELLOW) {
+        ctx.fillStyle = 'yellow';
+      } else if (color == DISC_EMPTY) {
+        ctx.fillStyle = 'white';
+      }
+      ctx.arc(
+        xCoord(c),
+        yCoord(r),
+        DISC_R,       // radius
+        0,            // start angle
+        2 * Math.PI,  // end angle
+      );
+      ctx.fill();
+    }
+  }
+}
+
 function redraw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawBoard();
+  drawDiscs(b);
 }
 
 function onMouseUpdate(e) {
@@ -86,11 +118,16 @@ function onMouseUpdate(e) {
 
 function onMouseClick(e) {
   // console.log(e);
+
   var col = colFromX(e.x);
+  b.tossDisk(col);
   console.log(col);
+  redraw();
 }
 
 document.addEventListener('mousemove', onMouseUpdate);
 document.addEventListener('click', onMouseClick);
 
 redraw();
+
+
