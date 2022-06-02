@@ -23,6 +23,7 @@ export class Board {
     return this.board[r][c];
   }
 
+  // Will return false if it fails and true if it adds a new disc
   tossDisk(column) {
     if (column < 0 || column >= BOARD_COLUMNS) {
       throw 'Column for tossing must be valid';
@@ -30,13 +31,13 @@ export class Board {
 
     if (this.gameFinished()) {
       // Game over, no more moves can be made
-      return;
+      return false;
     }
     
     var emptyIndex = this.board.map(row => row[column]).findIndex(e => e != DISC_EMPTY);
     var row = emptyIndex == -1 ? BOARD_ROWS - 1 : emptyIndex - 1;
     if (row < 0) {
-      return;
+      return false;
     }
     
     this.board[row][column] = this.color;
@@ -45,6 +46,7 @@ export class Board {
     } else if (this.color == DISC_YELLOW) {
       this.color = DISC_RED;
     }
+    return true;
   }
 
   getResult() {
@@ -122,5 +124,24 @@ export class Board {
     }
 
     return Board._anyHas4(diagonals, color);
+  }
+
+  allMoves() {
+    var newBoards = [];
+    for (var i = 0; i < BOARD_COLUMNS; i++) {
+      var newBoard = this.clone();
+      var addedDisc = newBoard.tossDisk(i);
+      if (addedDisc) {
+        newBoards.push(newBoard);
+      }
+    }
+    return newBoards;
+  }
+
+  clone() {
+    var newBoard = new Board();
+    newBoard.board = _.cloneDeep(this.board);
+    newBoard.color = this.color;
+    return newBoard;
   }
 }
