@@ -54,17 +54,22 @@ export class Board {
       return RESULT_RED_WINS;
     } else if (this._hasWin(DISC_YELLOW)) {
       return RESULT_YELLOW_WINS;
+    } else if (!this._hasMoves()) {
+      return RESULT_DRAW;
     } else if (this.color == DISC_RED) {
       return RESULT_RED_PLAYS;
     } else if (this.color == DISC_YELLOW) {
       return RESULT_YELLOW_PLAYS;
     }
-    return RESULT_DRAW;
   }
 
   gameFinished() {
     var result = this.getResult();
     return result == RESULT_RED_WINS || result == RESULT_YELLOW_WINS || result == RESULT_DRAW;
+  }
+
+  _hasMoves() {
+    return this.board.flat().findIndex(d => d == DISC_EMPTY) != -1;
   }
 
   _hasWin(color) {
@@ -127,12 +132,16 @@ export class Board {
   }
 
   allMoves() {
+    return this.allMovesWithColumns().map(b => b[1]);
+  }
+
+  allMovesWithColumns() {
     var newBoards = [];
     for (var i = 0; i < BOARD_COLUMNS; i++) {
       var newBoard = this.clone();
       var addedDisc = newBoard.tossDisk(i);
       if (addedDisc) {
-        newBoards.push(newBoard);
+        newBoards.push([i, newBoard]);
       }
     }
     return newBoards;
@@ -140,7 +149,7 @@ export class Board {
 
   clone() {
     var newBoard = new Board();
-    newBoard.board = _.cloneDeep(this.board);
+    newBoard.board = JSON.parse(JSON.stringify(this.board));  // clone
     newBoard.color = this.color;
     return newBoard;
   }
